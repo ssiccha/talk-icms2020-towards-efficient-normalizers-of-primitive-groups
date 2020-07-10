@@ -1,0 +1,86 @@
+\renewcommand{\phi}{\varphi}
+
+% BEAMER
+% Hack for only and tabular
+\newcommand{\tabularonly}{AS}
+% Hack for tilde and hat
+\newcommand{\mytilde}[1]    {\ensuremath{\tilde{#1}}}
+\newcommand{\myhat}[1]    {\ensuremath{\widehat{#1}}}
+% Hack to display \Gamma with a little bit of space to the left
+% Otherwise \ind _ \Gamma ^ H looks really weird
+\let\oldGamma\Gamma
+\renewcommand{\Gamma}{{\hspace{0.5pt} \oldGamma}}
+% Hack to reference the notation-definition in "lift a.s. normaliser"
+\newcommand{\refdef}    {{(6.1)}}
+
+% Symbols
+% Write function definitions like
+% f \from A \to B
+\newcommand{\from}	{\ensuremath{\colon}}
+\renewcommand{\to}	{\ensuremath{\rightarrow}}
+\newcommand{\into}	{\ensuremath{\hookrightarrow}}
+\newcommand{\onto}	{\ensuremath{\twoheadrightarrow}}
+\newcommand{\iso}	{\ensuremath{\xrightarrow{\,\raisebox{-1pt}{\ensuremath{\scriptstyle{\sim}}}\,}}}
+\newcommand{\N}	{\ensuremath{\mathbb N}}
+\newcommand{\Z}	{\ensuremath{\mathbb Z}}
+\newcommand{\Q}	{\ensuremath{\mathbb Q}}
+\newcommand{\Sn}{{\ensuremath{\mathrm{S}_n}}}
+\newcommand{\uln} {{\ensuremath{\underline n}}}
+
+%%% Categories
+\newcommand{\permgrp}   {\ensuremath{\mathbf{PermGrp}}}
+
+%%% Unary Operators
+% Functions
+\DeclareMathOperator{\dom}{dom}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\im}{Im}
+% Groups
+\DeclareMathOperator{\sym}{Sym}
+\DeclareMathOperator{\alternating}{Alt}
+\DeclareMathOperator{\soc}{soc}
+\DeclareMathOperator{\aut}{Aut}
+\DeclareMathOperator{\Aut}{Aut}
+\DeclareMathOperator{\out}{Out}
+\DeclareMathOperator{\Out}{Out}
+\DeclareMathOperator{\ind}{Ind}
+\DeclareMathOperator{\res}{Res}
+\DeclareMathOperator{\stab}{Stab}
+\newcommand{\hatOperator}   {\ensuremath{\, \myhat \cdot\,}}
+\def\Norm#1#2{\mathrm{N}_{#1}(#2)}
+
+%%% Binary Operators %%%
+\newcommand{\union}{\mathbin{\cup}}
+\newcommand{\bigunion}{\mathbin{\bigcup}}
+\newcommand{\disjointunion}{\mathbin{\uplus}}
+\newcommand{\intersection}{\mathbin{\cap}}
+\newcommand{\bigintersection}{\mathbin{\bigcap}}
+\newcommand{\norm}{\mathbin{\lhd}}
+\newcommand{\characteristic}{\mathbin{\text{char}}}
+
+
+% New commands
+\newcommand{\abs}[1]	{%
+	\ensuremath{
+		\left| #1 \right|
+	}%
+}
+\newcommand{\gen}[1]	{
+	\ensuremath{
+		\left\langle \, #1 \, \right\rangle
+	}
+}
+\newcommand{\set}[1]	{
+	\ensuremath{
+		\left\{ #1 \right\}
+	}
+}
+\newcommand{\sset}[2] {
+	\ensuremath{
+		\left\{ \left.\,
+			#1
+		~\right|~
+			#2
+		\,\right\}
+	}
+}
