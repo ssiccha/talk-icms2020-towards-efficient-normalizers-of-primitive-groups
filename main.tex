@@ -18,6 +18,10 @@
 \usepackage{tikz}
 \usetikzlibrary{cd}
 
+% References
+\usepackage{biblatex}
+\addbibresource{./references.bib}
+
 % Package Settings
 % AMSTHM
 \theoremstyle{plain}
@@ -34,11 +38,10 @@
 
 \input{./abbreviations.tex}
 
-\title{TODO Normalisatoren primitiver Gruppen mit nicht-regulären
-Sockeln in polynomieller Zeit}
-\date{July 10th, 2020}
+\title{Towards Efficient Normalizers For Primitive Groups}
+\date{July 15th, 2020}
 \author{Sergio Siccha}
-%\institute{Lehr- und Forschungsgebiet Algebra, RWTH Aachen}
+\institute{TU Kaiserslautern}
 
 \begin{document}
 
@@ -56,12 +59,112 @@ VERSION WITH NOTES!
 \end{frame}
 
 \section{Introduction}
+\begin{frame}{Normalizers}
 
-\begin{frame}{Theory vs Practice}
+Let $G, M \leq K$ be groups.
+The \emph{normalizer of $G$ in $M$} is
+the group
+\[
+N_M(G) = \set{ m \in M ~|~ G ^ m = G }.
+\]
+\vspace{0.5em}
 
+\pause
+\begin{block}{Theorem (D. Wiebking \cite{wiebking:normalizers-simply-exponential})}
+Let $G = \gen X \leq \Sym \Omega$.
+A generating set of $N_{\Sym \Omega}$
+can be computed in time $\gen X 2 ^ {O(\abs \Omega)}$.
+\end{block}
 \end{frame}
 
+\note{
+theoretical,
+canonical labelling
+}
+
+\begin{frame}{Theory and Practice}
+
+Let $G = \gen X \leq \Sym \Omega$, and $n := \abs \Omega$.
+We consider
+\begin{itemize}
+\item deterministic polynomial time $O(\abs X n ^ c)$
+\item Las Vegas nearly-linear time $O(\abs X n \, (\log n) ^ c)$
+\end{itemize}
+\vspace{1em}
+
+\pause
+We can compute in polynomial and in nearly-linear time:
+\begin{itemize}
+\item the order $\abs G$
+\item a composition series of $G$
+\item the socle of $G$
+\item \ldots
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Primitive Groups}
+A transitive group $G \leq \Sym \Omega$ is
+\emph{imprimitive}, if there exists a non-trivial $G$-invariant partition of
+$\Omega$,
+otherwise it is \emph{primitive}.
+
+\begin{columns}
+\begin{column}{0.5\textwidth}
+$D_8 := \gen{ (1,2,3,4),\, (1,4)(2,3) }$
+\\[1em]
+
+\only<1>{\vspace{1\baselineskip}}
+\only<2->{
+$\set{ \set{1,3}, \set{2,4} }$ is $D_8$-invariant.
+}
+\end{column}
+\begin{column}{0.3\textwidth}
+{
+\only<1->{
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.9\textwidth]{./pictures/square.png}
+\caption{A square}
+\end{figure}
+}
+}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}%{Resultat}
+\begin{block}{Theorem (S.)}
+Let $G = \gen X \leq \Sym \Omega$ be a primitive group
+with non-regular socle.
+We can compute (a generating set of) $N_{\Sym \Omega}(G)$
+in time $O(\abs X \abs \Omega ^ c)$.
+\end{block}
+\vspace{1em}
+Note: Most parts in nearly-linear time.
+
+\vspace{1em}
+\pause
+Note: For $M \leq \sym \Omega$ we have
+$N_{M}(G) = M \cap N_{\sym \Omega}(G)$.
+\end{frame}
+
+\begin{frame}{Implementation}
+A partial implementation is available at the github repository
+\begin{center}
+\href{https://github.com/ssiccha/NormalizersOfPrimitiveGroups}{ssiccha/NormalizersOfPrimitiveGroups}
+\end{center}
+\end{frame}
+
+
 \section{Strategy}
+\begin{frame}{Standing on the shoulders of giants}
+The algorithm depends heavily on
+\begin{itemize}
+\item the O'Nan-Scott Theorem
+\item the classification of finite simple groups (CFSG)
+\end{itemize}
+\end{frame}
+
 
 \section{Structure of primitive groups - O'Nan-Scott Theorem}
 
@@ -76,7 +179,10 @@ $\ell = \log_d n$.
 \end{frame}
 
 \section{Implementation}
+
 \begin{frame}[standout]
 Danke!
 \end{frame}
+
+\printbibliography
 \end{document}

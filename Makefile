@@ -1,7 +1,7 @@
 # Settings
 TARGET=main
 PREFIX=Socle
-OUTNAME=2020-Siccha-ICMS-Towards-Efficient-Normalizers-Of-Primitive-Groups
+OUTNAME=Siccha-2020-ICMS-Towards-Efficient-Normalizers-Of-Primitive-Groups
 TEX=latexmk --pdf -file-line-error -halt-on-error
 
 # Rules
