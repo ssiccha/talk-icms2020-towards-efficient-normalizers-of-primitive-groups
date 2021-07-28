@@ -1,7 +1,7 @@
 # Settings
 TARGET=main
 PREFIX=Socle
-OUTNAME=Siccha-2020-ICMS-Towards-Efficient-Normalizers-Of-Primitive-Groups
+OUTNAME=Siccha-2021-Groups-and-Combinatorics-Normalizers-of-simple-diagonal-groups-in-polynomial-time
 TEX=latexmk --pdf -file-line-error -halt-on-error
 
 # Rules
