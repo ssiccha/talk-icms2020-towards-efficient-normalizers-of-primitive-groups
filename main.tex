@@ -57,7 +57,7 @@ VERSION WITH NOTES!
 
 \begin{frame}{Representation}
 
-Groups are given by their generating sets.
+Groups are given by generating sets of permutations.
 
 Compute a group: compute a generating set.
 
@@ -85,8 +85,7 @@ time $2 ^ {O(n)}$.
 \end{frame}
 
 \note{
-theoretical,
-canonical labelling
+Luks and Miyazaki 2011
 }
 
 
@@ -95,6 +94,8 @@ Normalizers remain hard in practice and in theory.
 
 Permutation morphisms are very nice tools.
 \end{frame}
+
+\note{Babai 2016}
 
 \begin{frame}{Primitive Groups}
 A transitive group $G \leq \Sym \Omega$ is
@@ -223,7 +224,7 @@ For type AS this doesn't yield any information.
 \begin{frame}{Main steps}
 Goal:
 \\
-Let $G \leq S_n$ be primitive.
+Let $G \leq S_n$ be primitive with non-regular socle.
 Compute $N_{S_n}(G)$.
 
 Algorithm:
@@ -262,22 +263,22 @@ Step 2 today: only present tool for correctness.}
 
 \section{Permutation morphisms}
 \begin{frame}{Language}
-``Language serves not only to express thoughts, but to make possible thoughts
-which could not exist without it.''
-
-\hfill --
-Bertrand Russell
-% Human Knowledge: Its Scope and Limits, p 74 as found in google books
-\hspace{2em}
-
-\vspace{2em}
-
 ``[...] many properties of mathematical systems can be unified and simplified
 by a presentation with diagrams of arrows.''
 
 \hfill --
 Saunders Mac Lane
 % Categories for the working mathematician, Introduction
+\hspace{2em}
+
+\vspace{2em}
+
+``Language serves not only to express thoughts, but to make possible thoughts
+which could not exist without it.''
+
+\hfill --
+Bertrand Russell
+% Human Knowledge: Its Scope and Limits, p 74 as found in google books
 \hspace{2em}
 \end{frame}
 \note{always superior? No, I tried to formulate the concept of "a group leaves
@@ -289,11 +290,14 @@ Let $T \leq \sym \Delta$ be a regular non-abelian finite simple group.
 
 $T ^ \ell$ acts right-regularly on itself.
 
-Let $C := C_{\sym \Delta}(T)$,
-$\diag_{\ell - 1}(C) = \sset{(c, \ldots, c) \in C ^ {\ell - 1}}{ c \in C }$,
-and
-$H := \gen{ T ^ {\ell - 1}, \diag_{\ell - 1}(C) } \leq
-\sym(\Delta ^ {\ell - 1})$.
+Let $G \leq \sym(\Delta ^ \ell)$ be a primitive group after
+``step 1'' and $H = \soc G$.
+
+%Let $C := C_{\sym \Delta}(T)$,
+%$\diag_{\ell - 1}(C) = \sset{(c, \ldots, c) \in C ^ {\ell - 1}}{ c \in C }$,
+%and
+%$H := \gen{ T ^ {\ell - 1}, \diag_{\ell - 1}(C) } \leq
+%\sym(\Delta ^ {\ell - 1})$.
 
 Let $\mathcal D$ be the group induced by the \emph{standard diagonal action} of $T ^ \ell$.
 
@@ -366,6 +370,34 @@ if and only if:
 \]
 \end{frame}
 
+\begin{frame}{Permutation morphism}
+Let $\rho \from \Omega \times G \to \Omega$ and
+$\tau \from \Delta \times H \to \Delta$ be \textbf{natural} actions.
+We call $F = (f, \phi)$ with
+$f \from \Omega \to \Delta,~ \phi \from G \to H$
+a \emph{permutation morphism} from $G$ to $H$
+if:
+\vspace{1em}
+\[
+\begin{tikzcd}[ampersand replacement=\&]
+    \Omega \times G
+        \ar[r, "\rho"]
+        \ar[d, "f \times \varphi"]
+    \&
+    \Omega
+        \ar[d, "f"]
+    %
+    \\
+    %
+    \Delta \times H
+        \ar[r, "\tau"]
+    \&
+    \Delta
+\end{tikzcd}
+\raisebox{-2em}{.}
+\]
+\end{frame}
+
 \begin{frame}{Action morphism}
 Let $\rho \from \Omega \times G \to \Omega$ and
 $\tau \from \Delta \times H \to \Delta$ be actions.
@@ -393,9 +425,6 @@ if:
 \raisebox{-2em}{.}
 \]
 
-\pause
-If $\rho$ and $\tau$ are \textbf{natural} actions, we also call $F$ a
-\emph{permutation morphism} from $G$ to $H$.
 \end{frame}
 
 \begin{frame}{Composition}
@@ -665,6 +694,7 @@ Let $\mathcal D$ be the group induced by $T ^ \ell$ on $\Sigma$.
     \mapsto
     [x_1, \ldots, x_\ell].
 \]
+\todo{add $\Sigma \to T ^ {\ell - 1}$ here?}
 
 $S_\ell$ acts on $T ^ \ell$ by permuting components.
 Let $\mathcal S$ be the group induced on $\Sigma$ by the push-forward by $d$.
