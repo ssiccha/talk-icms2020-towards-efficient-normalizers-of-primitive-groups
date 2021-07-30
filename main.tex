@@ -3,7 +3,9 @@
 \usetheme{metropolis}
 
 %\setbeameroption{show notes}
-%\setbeameroption{show notes on second screen}
+
+\usepackage{pgfpages}
+\setbeameroption{show notes on second screen}
 
 % Packages
 \usepackage[utf8]{inputenc}
@@ -52,24 +54,6 @@ VERSION WITH NOTES!
 }
 
 \section{Introduction}
-\begin{frame}{TODO}
-!! Theory vs Algorithmic !!
-
-Everything has to be explicit and constructive.
-
-O'Nan-Scott as Example:
-- Theorem: there exists a p.iso
-- Algorithmic: Given a group $G .. $, what is this p.iso? Construct it!
-
-Connection: Cartesian Decomposition + Product Decomposition
-
-Approaches:
-- backtrack
-- O'Nan-Scott
-
-For SD type: say
-$W = \sset{(a_1, \ldots, a_k) \cdot \pi }{ \ldots a_i \equiv a_j mod Inn }$
-\end{frame}
 
 \begin{frame}{Representation}
 
@@ -107,7 +91,7 @@ canonical labelling
 
 
 \begin{frame}{Motivation}
-Normalizers remain hard in practice.
+Normalizers remain hard in practice and in theory.
 
 Permutation morphisms are very nice tools.
 \end{frame}
@@ -153,8 +137,8 @@ $N_{M}(G) = M \cap N_{\sym \Omega}(G)$.
 
 \vspace{1em}
 \pause
-Note: Most parts in nearly-linear time.
-
+For these groups, computing the normalizer is as hard as computing
+intersections.
 \end{frame}
 
 %\begin{frame}{Implementation}
@@ -186,8 +170,31 @@ Problem:
 
 \end{frame}
 
-\note{Reconstruct the component-wise action}
+\note{For other types: reconstruct the component-wise action}
 
+\begin{frame}
+Let $\Delta := \set{1, \ldots, 5}$ and
+$X \leq S_{125}$ be permutation isomorphic to
+$(A_5) ^ 3 \leq \sym(\Delta ^ 3)$ in component-wise action.
+
+If the permutation isomorphism is ``send a tuple to its $5$-adic expansion
+(with offset)'',
+\pause
+then we have
+\begin{align*}
+    &(1, 2, 3, 4, 5) (6, 7, 8, 9, 10) \ldots \in X
+    \\
+    &(1, 6, 11, 16, 21) (2, 7, 12, 17, 22) \ldots \in X
+\end{align*}
+
+\pause
+If the permutation isomorphism is not ``nice'' we might have
+\begin{align*}
+    &(1, 123, 79, 11, 55) (2, 3, 23, 63, 78) \ldots \in X.
+\end{align*}
+\end{frame}
+
+\note{``not nice'' could have an arbitrary conjugate of the ``nice'' group}
 
 \begin{frame}{Classification of primitive groups}
 Let $G$ be a group. The \emph{socle} of $G$, denoted $\soc G$,
@@ -210,30 +217,48 @@ The socle of a primitive group is a direct power of a simple group.
 \end{frame}
 
 \note{
-Typ PA: einfachster nicht-trivialer Fall.
+For type AS this doesn't yield any information.
 }
 
 \begin{frame}{Main steps}
+Goal:
+\\
 Let $G \leq S_n$ be primitive.
 Compute $N_{S_n}(G)$.
 
-Compute:
-\begin{itemize}
-\item Step 1: $M := N_{S_n}(\soc G)$.
+Algorithm:
+\begin{enumerate}
+\item Find a ``nice'' permutation isomorphism for $\soc G$
+\\
+(weak canonical form).
+
+\item $M := N_{S_n}(\soc G)$.
 Then we have $N_{S_n}(G) = N_M(G)$.
 
-\item Step 2: Grouphomomorphism
+\item
 $
     \rho : M \to S_k
 $
 with $k \leq c \cdot \log n$.
 Use Wiebking's $2 ^ {O(n)}$ algorithm.
-\end{itemize}
+\end{enumerate}
 \vspace{1em}
 
 \pause
-Today: focus on step 1 for primitive groups of type SD.
+Today: focus on step 2 for primitive groups of type SD.
 \end{frame}
+
+\note{Step 1: reconstruct component-wise action of the socle ( or a suitable
+big normal subgroup )
+\\
+Step 3: Transform product action wreath product into a primitive wreath
+product: $m ^ d$ points to $m \cdot d$ points.
+Thus $d \sim \log_m n$.
+Then factor out the socle such that the outer automorphisms contribute
+only a factor of $\log m$.
+In total: $\log m \cdot \log_m n = \log n$.
+\\
+Step 2 today: only present tool for correctness.}
 
 \section{Permutation morphisms}
 \begin{frame}{Language}
@@ -242,7 +267,7 @@ which could not exist without it.''
 
 \hfill --
 Bertrand Russell
-% Human Knowledge: Its Scope and Limits
+% Human Knowledge: Its Scope and Limits, p 74 as found in google books
 \hspace{2em}
 
 \vspace{2em}
@@ -252,12 +277,45 @@ by a presentation with diagrams of arrows.''
 
 \hfill --
 Saunders Mac Lane
-% Categories for the working  mathematician
+% Categories for the working mathematician, Introduction
 \hspace{2em}
 \end{frame}
 \note{always superior? No, I tried to formulate the concept of "a group leaves
 a cartesian decomposition invariant" with diagrams of arrows.
 That did not work out.}
+
+\begin{frame}{Three groups}
+Let $T \leq \sym \Delta$ be a regular non-abelian finite simple group.
+
+$T ^ \ell$ acts right-regularly on itself.
+
+Let $C := C_{\sym \Delta}(T)$,
+$\diag_{\ell - 1}(C) = \sset{(c, \ldots, c) \in C ^ {\ell - 1}}{ c \in C }$,
+and
+$H := \gen{ T ^ {\ell - 1}, \diag_{\ell - 1}(C) } \leq
+\sym(\Delta ^ {\ell - 1})$.
+
+Let $\mathcal D$ be the group induced by the \emph{standard diagonal action} of $T ^ \ell$.
+
+\pause
+\[
+\begin{tikzcd}[column sep=small, ampersand replacement=\&]
+    \&
+    T ^ \ell
+    \&
+    \\
+    H
+    \&
+    \&
+    \mathcal D
+\end{tikzcd}
+\]
+\end{frame}
+
+\note{If not algorithmic, then there are only $T ^ \ell$ and $\mathcal D$.
+We can identify these, no problem.
+Three groups though is too much for identification IMO.
+So we need to translate between these three worlds.}
 
 \begin{frame}{Permutation isomorphism (1)}
 Let $G \leq \sym \Omega$ and $H \leq \sym \Delta$.
@@ -372,7 +430,7 @@ Componentwise:
 \end{frame}
 
 \begin{frame}{Categories}
-\begin{block}{Theorem (S.)}
+\begin{block}{Proposition (S.)}
 \begin{itemize}
 \item Right-actions together with action morphisms form a category.
 \item
@@ -382,7 +440,8 @@ That category admits finite products.
 \end{block}
 \end{frame}
 
-\note{admits = ``existence'', finite products used in PA case}
+\note{categories also are lots of fun,
+admits = ``existence'', finite products used in PA case}
 
 \begin{frame}{Permutation morphisms}
 \begin{block}{Lemma (S.)}
@@ -392,7 +451,7 @@ group epim. $\phi : G \to H$ such that
 $(f, \phi)$ is a permutation epimorphism
 if and only if:
 \[
-    \set{ f ^ {-1}(\set{\delta}) ~|~ \delta \in \Delta }
+    \Sigma := \set{ f ^ {-1}(\set{\delta}) ~|~ \delta \in \Delta }
 \]
 is $G$-invariant.
 \end{block}
@@ -400,7 +459,7 @@ is $G$-invariant.
 %We call such an $f$ \emph{compatible} with $G$.
 
 \pause
-If $G$ transitive: think the action induced on the above block system.
+If $G$ transitive: $H = G ^ \Sigma$, $\phi : g \mapsto g ^ \Sigma$.
 \end{frame}
 
 \note{$\onto$ means surjective}
@@ -424,70 +483,65 @@ Let $f : \Omega \onto \Delta$ be surjective such that there exists
 an action $\tau : \Delta \times G \to \Delta$ with
 $(f, \id_G)$ being a morphism from $\rho$ to $\tau$.
 
-We call $\tau$ the push-forward of $\rho$ by $f$.
+We call $\tau$ the \emph{push-forward of $\rho$ by $f$}.
 \end{block}
 \end{frame}
 
-\begin{frame}{Permutation morphisms and products}
-\todo{push-forward example?}
-
-\begin{block}{Example}
-$\Omega := \set{1, \ldots, 4}$ und
-$V := \langle a := (1,2)(3,4),~$%
-$b := (1,3)(2,4) \rangle$.
-
-\begin{figure}[H]
-\centering
-\begin{tikzpicture}
-    % nodes
-    \foreach \x in {1, ..., 2}
-        \foreach \y in {1, ..., 2}
-            \draw [fill] (\x, \y) circle [radius=0.050];
-    \node [above left] at (1, 2) {{$1$}};
-    \node [above left] at (2, 2) {{$2$}};
-    \node [above left] at (1, 1) {{$3$}};
-    \node [above left] at (2, 1) {{$4$}};
-\end{tikzpicture}
-\end{figure}
-
-\only<1>{\vspace{9.25em}}
-\only<2>{
-\begin{align*}
-p_1 &: \Omega \to \set{1,3},~~
-1,2 \mapsto 1, ~~ 3,4 \mapsto 3,
-\\
-\pi_1 &: G \to \gen{(1,3)},~~
-\id_\Omega, a \mapsto \id_{\set{1,3}},
-~~b, ab \mapsto (1,3).
-\end{align*}
-
-Analoguously $P_2$.
-Then $P_1 \times P_2 : V \iso \gen{(1,3)} \times \gen{(1,2)}$
-}
-\only<3>{
-For
-$p_1' : \omega \mapsto \omega ^ {\gen{a}}$
-we have
-\begin{align*}
-1 ^ {\gen a} = 2 ^ {\gen a} = \set{ 1,2 }
-\\
-3 ^ {\gen a} = 4 ^ {\gen a} = \set{ 3,4 }
-\end{align*}
-\vspace{0.75em}
-}
-\end{block}
-\end{frame}
+%\begin{frame}{Permutation morphisms and products}
+%\todo{push-forward example?}
+%
+%\begin{block}{Example}
+%$\Omega := \set{1, \ldots, 4}$ und
+%$V := \langle a := (1,2)(3,4),~$%
+%$b := (1,3)(2,4) \rangle$.
+%
+%\begin{figure}[H]
+%\centering
+%\begin{tikzpicture}
+%    % nodes
+%    \foreach \x in {1, ..., 2}
+%        \foreach \y in {1, ..., 2}
+%            \draw [fill] (\x, \y) circle [radius=0.050];
+%    \node [above left] at (1, 2) {{$1$}};
+%    \node [above left] at (2, 2) {{$2$}};
+%    \node [above left] at (1, 1) {{$3$}};
+%    \node [above left] at (2, 1) {{$4$}};
+%\end{tikzpicture}
+%\end{figure}
+%
+%\only<1>{\vspace{9.25em}}
+%\only<2>{
+%\begin{align*}
+%p_1 &: \Omega \to \set{1,3},~~
+%1,2 \mapsto 1, ~~ 3,4 \mapsto 3,
+%\\
+%\pi_1 &: G \to \gen{(1,3)},~~
+%\id_\Omega, a \mapsto \id_{\set{1,3}},
+%~~b, ab \mapsto (1,3).
+%\end{align*}
+%
+%Analoguously $P_2$.
+%Then $P_1 \times P_2 : V \iso \gen{(1,3)} \times \gen{(1,2)}$
+%}
+%\only<3>{
+%For
+%$p_1' : \omega \mapsto \omega ^ {\gen{a}}$
+%we have
+%\begin{align*}
+%1 ^ {\gen a} = 2 ^ {\gen a} = \set{ 1,2 }
+%\\
+%3 ^ {\gen a} = 4 ^ {\gen a} = \set{ 3,4 }
+%\end{align*}
+%\vspace{0.75em}
+%}
+%\end{block}
+%\end{frame}
 
 %\begin{frame}{Permutation morphisms and products}
 %$\Delta = \set{1, \ldots, 5}$, $\Omega = \Delta ^ 2$,
 %$H = (A_5) ^ 2 \leq \Sym(\Delta ^ 2)$,
 %$N_1 := \mathbf 1 \times A_5 \unlhd H$.
 %\end{frame}
-
-\section{Primitive groups of type SD}
-\begin{frame}{TODO}
-
-\end{frame}
 
 %\begin{frame}{AS Type}
 %Let $G \leq \sym \Omega$ be primitive.
@@ -498,80 +552,221 @@ we have
 %Use constructive recognition to compute $N_{\sym \Delta}(T)$.
 %\end{frame}
 
-\begin{frame}{PA Type}
-Let $G \leq \sym \Omega$ be primitive.
-We say $G$ is of \emph{type PA}, if
-there exist a non-abelian simple group
-$T \leq \sym \Delta$
-and a permutation iso.
-$(f : \Omega \to \Delta ^ \ell,~ \phi : G \to H)$
-with
+%\begin{frame}{PA Type}
+%Let $G \leq \sym \Omega$ be primitive.
+%We say $G$ is of \emph{type PA}, if
+%there exist a non-abelian simple group
+%$T \leq \sym \Delta$
+%and a permutation iso.
+%$(f : \Omega \to \Delta ^ \ell,~ \phi : G \to H)$
+%with
+%\[
+%\phi (\soc G) = T ^ \ell \leq \sym(\Delta ^ \ell).
+%\]
+%
+%\pause
+%\begin{block}{Corollary}
+%$G \leq \sym(\Delta ^ \ell)$ primitive s.t.
+%$\soc G = T ^ \ell$.
+%Let $M := N_{\sym (\Delta ^ \ell)}(T ^ \ell)$.
+%Then
+%\[
+%    M = N_{\sym \Delta}(T) \wr S_\ell
+%\]
+%and thus $M / (\soc G) \into \Out(T) \wr S_\ell$.
+%\end{block}
+%\end{frame}
+%
+%\begin{frame}{PA Type}
+%\begin{block}{Step 1}
+%Let $G \leq \sym(\Delta ^ \ell)$ primitive with
+%$\soc G = T ^ \ell$.
+%Then $M = N_{\Sym \Delta}(T) \wr S_\ell$ can be computed in polynomial
+%time.
+%\end{block}
+%\vspace{1em}
+%
+%\pause
+%\begin{block}{Step 2}
+%\vspace{-1em}
+%\[
+%    M \to \Sym( \Delta \times \set{1, \ldots, \ell} ).
+%\]
+%\pause
+%Theoretical version: Let $d := \abs \Delta$.
+%Then $\abs{\Out T} \leq 3 \log d$ by
+%\cite{guralnick-maroti-pyber:normalizers-primitive-groups}
+%and $\ell = \log_d(n)$.
+%\[
+%    M \to \Out T \wr S_\ell \to S_{(3 \log n)}.
+%\]
+%\end{block}
+%\end{frame}
+%
+%\begin{frame}
+%How to find $T ^ \ell$ if $G \leq \Sym \Omega$ is arbitrary?
+%Find $\ell$ \emph{projections} $\pi_i : \soc G \onto T$
+%such that
+%\[
+%\prod \pi_i : \soc G \iso T ^ \ell
+%\]
+%yields a permutation isomorphism.
+%\end{frame}
+
+\section{Primitive groups of type SD}
+
+\note{now keep notation for rest of talk}
+
+\begin{frame}{Standard diagonal action (1)}
+Let $T \leq \sym \Delta$ always be regular finite
+non-abelian simple.
+
+For $x \in T ^ \ell$ let
 \[
-\phi (\soc G) = T ^ \ell \leq \sym(\Delta ^ \ell).
+    [x_1, \ldots, x_\ell]
+    :=
+    \sset{(t ^ {-1} x_1, \ldots, t ^ {-1} x_\ell)} {t \in T}
+    \subseteq T ^ \ell.
+\]
+
+Call
+\[
+    \Sigma
+    :=
+    \sset{ [x_1, \ldots, x_\ell] }{ x \in T ^ \ell }
+\]
+and
+\[
+    d \from T ^ \ell \to \Sigma,
+    (x_1, \ldots, x_\ell)
+    \mapsto
+    [x_1, \ldots, x_\ell].
 \]
 
 \pause
-\begin{block}{Corollary}
-$G \leq \sym(\Delta ^ \ell)$ primitive s.t.
-$\soc G = T ^ \ell$.
-Let $M := N_{\sym (\Delta ^ \ell)}(T ^ \ell)$.
-Then
-\[
-    M = N_{\sym \Delta}(T) \wr S_\ell
-\]
-and thus $M / (\soc G) \into \Out(T) \wr S_\ell$.
-\end{block}
+Call the push-forward by $d$
+of the right-regular action of $T ^ \ell$
+the \emph{(standard) diagonal action of $T ^ \ell$ (on $\Sigma$)}.
+Let $\mathcal D$ be the group induced by $T ^ \ell$ on $\Sigma$.
 \end{frame}
 
-\begin{frame}{PA Type}
-\begin{block}{Step 1}
-Let $G \leq \sym(\Delta ^ \ell)$ primitive with
-$\soc G = T ^ \ell$.
-Then $M = N_{\Sym \Delta}(T) \wr S_\ell$ can be computed in polynomial
-time.
-\end{block}
-\vspace{1em}
+\note{$\mathcal D$ plays the role of the socle}
+
+\begin{frame}{Standard diagonal action (2)}
+\[
+    [x_1, \ldots, x_\ell]
+    =
+    \sset{(t ^ {-1} x_1, \ldots, t ^ {-1} x_\ell)} {t \in T}
+    \subseteq T ^ \ell.
+\]
+\[
+    d \from T ^ \ell \to \Sigma,
+    (x_1, \ldots, x_\ell)
+    \mapsto
+    [x_1, \ldots, x_\ell].
+\]
+
+$S_\ell$ acts on $T ^ \ell$ by permuting components.
+Let $\mathcal S$ be the group induced on $\Sigma$ by the push-forward by $d$.
+$\mathcal S$ normalizes $\mathcal D$.
+\end{frame}
+
+\begin{frame}{Standard diagonal action (3)}
+\[
+    [x_1, \ldots, x_\ell]
+    =
+    \sset{(t ^ {-1} x_1, \ldots, t ^ {-1} x_\ell)} {t \in T}
+    \subseteq T ^ \ell.
+\]
+\[
+    d \from T ^ \ell \to \Sigma,
+    (x_1, \ldots, x_\ell)
+    \mapsto
+    [x_1, \ldots, x_\ell].
+\]
+
+$\Aut(T)$ acts on $T ^ \ell$ via
+$(t_1, \ldots, t_\ell) ^ \tau := (\tau(t_1), \ldots, \tau(t_\ell))$.
+\\
+Let $\mathcal A$ be the group induced on $\Sigma$ by the push-forward by $d$.
+\\
+$\mathcal A$ normalizes $\mathcal D$.
 
 \pause
-\begin{block}{Step 2}
-\vspace{-1em}
-\[
-    M \to \Sym( \Delta \times \set{1, \ldots, \ell} ).
-\]
+\begin{equation}
+\mathcal N := N_{\sym \Sigma}(\mathcal D) = \gen{\mathcal D, \mathcal S, \mathcal A}.
+\end{equation}
+
+A primitive group $G$ is of SD type if $G \into \mathcal N$.
+\end{frame}
+
+\note{exists permutation mono $G \into \mathcal N$ ``='' perm iso to a subgroup
+of $\mathcal N$.}
+
+\begin{frame}{Normalizer of the socle}
+$T \leq \sym \Delta$.
+$T ^ \ell$ acts right-regularly on itself.
+
+Let $C := C_{\sym \Delta}(T)$
+and
+$\diag_{\ell - 1}(C) = \sset{(c, \ldots, c) \in C ^ {\ell - 1}}{ c \in C }$.
+
+Let $G \leq \sym(\Delta ^ {\ell - 1})$ be primitive of type SD such that
+$H := \soc G = \gen{ T ^ {\ell - 1}, \diag_{\ell - 1}(C) }$.
+
 \pause
-Theoretical version: Let $d := \abs \Delta$.
-Then $\abs{\Out T} \leq 3 \log d$ by
-\cite{guralnick-maroti-pyber:normalizers-primitive-groups}
-and $\ell = \log_d(n)$.
 \[
-    M \to \Out T \wr S_\ell \to S_{(3 \log n)}.
+\begin{tikzcd}[column sep=small, ampersand replacement=\&]
+    \&
+    T ^ \ell
+    \&
+    \\
+    H
+    \&
+    \&
+    \mathcal D
+\end{tikzcd}
 \]
-\end{block}
 \end{frame}
 
-\begin{frame}
-How to find $T ^ \ell$ if $G \leq \Sym \Omega$ is arbitrary?
-Find $\ell$ \emph{projections} $\pi_i : \soc G \onto T$
-such that
+\begin{frame}{Translation (1)}
+Let $\rho$ be the right-regular action of $T ^ \ell$ on itself.
+
+Define maps $q$ and $e$ with
 \[
-\prod \pi_i : \soc G \iso T ^ \ell
+\begin{tikzcd}[column sep=scriptsize, ampersand replacement=\&]
+    \&
+    T ^ \ell
+        % the apostrophe ' after "q" causes the label to be placed on the
+        % opposite side
+        \ar[ld, "q"']
+        \ar[rd, "d"]
+    \&
+    \\
+    \Delta ^ {\ell - 1}
+        \ar[rr, "e"]
+    \&
+    \&
+    \Sigma
+\end{tikzcd}
 \]
-yields a permutation isomorphism.
+such that:
+\begin{itemize}
+\item the push-forward of $\rho$ by $q$ induces $H$,
+\item the push-forward of $\rho$ by $e \circ q$ induces $\mathcal D$.
+\end{itemize}
 \end{frame}
 
-\begin{frame}{Triangles}
-\todo{make arrows surjective arrows}
-\begin{block}{Lemma}
-Faithful action of $G$ on $\Omega$.
-$H \leq \sym \Delta$, $K \leq \sym \Gamma$.
+\begin{frame}{Translation (2)}
+This yields isomorphisms:
 \[
 \begin{tikzcd}[ampersand replacement=\&]
     \&
-    \Omega
+    T ^ \ell
         % the apostrophe ' after "f" causes the label to be placed on the
         % opposite side
-        \ar[ld, "f"']
-        \ar[rd, "k"]
+        \ar[ld, "q"']
+        \ar[rd, "d"]
     \&
     %
     \&
@@ -579,45 +774,61 @@ $H \leq \sym \Delta$, $K \leq \sym \Gamma$.
     %
     \&
     \&
-    G
-        \ar[ld, "\phi"']
-        \ar[rd, "\kappa"]
+    T ^ \ell
+        \ar[ld, "\psi"']
+        \ar[rd, "\delta"]
     \&
     \\
-    \Delta
-        \ar[rr, "g"]
+    \Delta ^ {\ell - 1}
+        \ar[rr, "e"]
     \&
     \&
-    \Gamma
+    \Sigma
     \&
     \&
     H
-        \ar[rr, dashrightarrow, "\psi"]
+        \ar[rr, "\epsilon"]
     \&
     \&
-    K
+    \mathcal D
 \end{tikzcd}
 \]
-\end{block}
 \end{frame}
 
-\begin{frame}{TODO}
-Prerequisuites for Correctness:
+\note{I get the group homomorphisms by a general lemma.}
 
-Instead of giving names to everything, construct everything step-by-step?
-\begin{itemize}
-\item push-forward actions
-\item multiplication compatible maps. Here we can just say:
-Wlog $1 \in \Omega$.
-$i : T \iso \Omega, t \mapsto 1 ^ t$.
-\end{itemize}
-\end{frame}
+\begin{frame}{Translation (3)}
+Wlog $1 \in \Delta$.
+Let $i : T \iso \Delta, t \mapsto 1 ^ t$.
 
-\begin{frame}{Correctness}
-Construct isomorphism between socle of weak canonical form SD group and the
-standard diagonal thingy:
+\pause
+Let
+\begin{align*}
+    q_1 \from &T ^ \ell \to T ^ {\ell - 1},
+    \\
+    &(x_1, \ldots, x_{\ell})
+    \mapsto
+    ( x_\ell ^ {-1} x_1,~
+    \ldots,~
+     x_\ell ^ {-1} x_{\ell - 1}),
+\end{align*}
+$
+    q_2 \from T ^ {\ell - 1} \to \Delta ^ {\ell - 1}
+$
+apply $i$ to each component, and
+\[
+    q := q_2 \circ q_1 \from T ^ \ell \to \Delta ^ {\ell - 1}.
+\]
 
-8.2.1 - 8.2.8
+\pause
+Let
+\begin{align*}
+    e \from &\Delta ^ {\ell - 1} \to \Sigma,
+    \\
+    &(\delta_1, \ldots, \delta_{\ell - 1})
+    \mapsto
+    [ i ^ {-1}(\delta_1), \ldots, i ^ {-1}(\delta_{\ell - 1}), 1_T ]
+\end{align*}
 \end{frame}
 
 \begin{frame}[standout]
